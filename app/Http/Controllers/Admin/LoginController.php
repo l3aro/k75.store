@@ -10,6 +10,8 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
+    protected $redirectTo = "/admin";
+
     /**
      * Show the application's login form.
      *
