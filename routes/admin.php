@@ -11,6 +11,23 @@
 |
 */
 
+Route::group([
+    'middleware' => 'guest'
+], function() {
+    Route::group(['prefix' => 'login'], function() {
+        Route::get('', [
+            'as' => 'admin.auth.showLoginForm',
+            'uses' => 'LoginController@showLoginForm'
+        ]);
+        Route::post('', [
+            'as' => 'admin.auth.login',
+            'uses' => 'LoginController@login'
+        ]);
+    });
+
+    // Forgot Password
+});
+
 Route::get('', [
     'as' => 'admin.dashboard.index',
     'uses' => 'DashboardController@index'
