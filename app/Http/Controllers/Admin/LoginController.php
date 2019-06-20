@@ -19,4 +19,19 @@ class LoginController extends Controller
     {
         return view('admin.auth.login');
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect()->route('admin.auth.showLoginForm');
+    }
 }
