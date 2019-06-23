@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        $categories = $this->getSubCategories(0);
+
+        return view('admin.category.index', compact('categories'));
+    }
+
+    private function getSubCategories($parent_id)
+    {
+        $categories = Category::where('parent_id', $parent_id)->get();
+        if ($categories->count()) {
+            $categories = $categories->map(function($category) {
+                $category->sub = $this->getSubCategories($category->id);
+                return $category;
+            });
+
+        }
+
+        return $categories;
     }
 
     /**
@@ -57,7 +74,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.category.edit');
+        $categories = $this->getSubCategories(0);
+
+        return view('admin.category.edit', compact('categories'));
     }
 
     /**
