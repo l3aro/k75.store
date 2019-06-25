@@ -20,12 +20,13 @@ class CategoryController extends Controller
         return view('admin.category.index', compact('categories'));
     }
 
-    private function getSubCategories($parent_id)
+    private function getSubCategories($parent_id, $process_id=null)
     {
-        $categories = Category::where('parent_id', $parent_id)->get();
+        $categories = Category::where('parent_id', $parent_id)->where('id', '<>', $process_id)->get();
         if ($categories->count()) {
-            $categories = $categories->map(function($category) {
-                $category->sub = $this->getSubCategories($category->id);
+            $categories = $categories->map(function($category) use($process_id) {
+
+                $category->sub = $this->getSubCategories($category->id, $process_id);
                 return $category;
             });
 
@@ -74,9 +75,11 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categories = $this->getSubCategories(0);
+        $categories = $this->getSubCategories(0, $id);
 
-        return view('admin.category.edit', compact('categories'));
+        $category = Category::findOrFail($id);
+
+        return view('admin.category.edit', compact('categories', 'category'));
     }
 
     /**
@@ -88,7 +91,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:6',
+            'parent_id' => 'required'
+        ], [
+            'name.required' => "Chưa điền tên kìa.",
+            'name.min' => "Ít chữ quá, điền hơn 6 kí tự đi"
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        $credentials = $request->only([
+            'name', 'parent_id'
+        ]);
+        $category->fill($credentials);
+        $category->save();
+
+        return redirect()->route('admin.categories.edit', $category->id)->with('success', 'Cập nhật thành công');
     }
 
     /**
