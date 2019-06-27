@@ -42,7 +42,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        $categories = $this->getSubCategories(0);
+        return view('admin.category.create', compact('categories'));
     }
 
     /**
@@ -53,7 +54,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'parent_id' => 'required|numeric|min:0'
+        ]);
+
+        $attributes = $request->only([
+            'name', 'parent_id'
+        ]);
+
+        $category = Category::create($attributes);
+        return redirect()->route('admin.categories.edit', $category->id)
+            ->with('success', 'Thêm mới danh mục thành công');
     }
 
     /**
