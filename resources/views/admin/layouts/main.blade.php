@@ -28,7 +28,7 @@
                     </svg> Tổng quan</a></li>
             <li><a href="{{ route('admin.categories.index') }}"><svg class="glyph stroked clipboard with paper">
                         <use xlink:href="#stroked-clipboard-with-paper" /></svg> Danh Mục</a></li>
-            <li><a href="listproduct.html"><svg class="glyph stroked bag">
+            <li><a href="{{ route('admin.products.index') }}"><svg class="glyph stroked bag">
                         <use xlink:href="#stroked-bag"></use>
                     </svg> Sản phẩm</a></li>
             <li><a href="order.html"><svg class="glyph stroked notepad ">
