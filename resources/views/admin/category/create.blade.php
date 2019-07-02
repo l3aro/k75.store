@@ -45,9 +45,9 @@
                                     <select class="form-control" name="parent_id">
                                         <option value="0">----ROOT----</option>
                                         @includeWhen(true, 'admin.partials.category_options', [
-                                        'categories' => $categories,
-                                        'nth' => 0,
-                                        'process_id' => null
+                                            'categories' => $categories,
+                                            'nth' => 0,
+                                            'process_id' => null
                                         ])
                                     </select>
                                 </div>

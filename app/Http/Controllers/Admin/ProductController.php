@@ -24,7 +24,23 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $categories = $this->getSubCategories(0);
+        return view('admin.product.create', compact('categories'));
+    }
+
+    private function getSubCategories($parent_id, $process_id=null)
+    {
+        $categories = Category::where('parent_id', $parent_id)->where('id', '<>', $process_id)->get();
+        if ($categories->count()) {
+            $categories = $categories->map(function($category) use($process_id) {
+
+                $category->sub = $this->getSubCategories($category->id, $process_id);
+                return $category;
+            });
+
+        }
+
+        return $categories;
     }
 
     /**

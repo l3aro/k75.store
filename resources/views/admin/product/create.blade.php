@@ -20,10 +20,11 @@
                                         <div class="form-group">
                                             <label>Danh mục</label>
                                             <select name="category_id" class="form-control">
-                                                <option value='1' selected>Nam</option>
-                                                <option value='3'>---|Áo khoác nam</option>
-                                                <option value='2'>Nữ</option>
-                                                <option value='4'>---|Áo khoác nữ</option>
+                                                @includeWhen(true, 'admin.partials.category_options', [
+                                                    'categories' => $categories,
+                                                    'nth' => 0,
+                                                    'process_id' => null
+                                                ])
                                             </select>
                                         </div>
                                         <div class="form-group">
