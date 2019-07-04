@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('admin.product.index');
+        $products = Product::with('category')->paginate(4);
+        return view('admin.product.index', compact('products'));
     }
 
     /**
@@ -51,7 +54,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_id' => 'required|numeric|min:0',
+            'name' => 'required',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0',
+            'avatar' => 'sometimes|image'
+        ]);
+
+        $attributes = $request->only([
+            'category_id', 'product_code', 'name', 'price', 'is_highlight', 'quantity', 'detail', 'description'
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            $destinationDir = public_path('media/product'); 
+            $extension = $request->avatar->extension();
+            $fileName = uniqid('vietpro'). '.' .$extension;
+            $request->avatar->move($destinationDir, $fileName);
+            $attributes['avatar'] = asset('media/product/'.$fileName);
+        }
+
+        $product = Product::create($attributes);
+
+        return redirect()->route('admin.products.edit', $product->id)->with('success', 'Tạo sản phẩm thành công');
     }
 
     /**
