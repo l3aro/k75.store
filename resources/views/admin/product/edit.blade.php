@@ -27,11 +27,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Mã sản phẩm</label>
-                                <input type="text" name="code" class="form-control" value="SP01">
+                                <input type="text" name="code" class="form-control" value="{{ $product->product_code }}">
                             </div>
                             <div class="form-group">
                                 <label>Tên sản phẩm</label>
-                                <input type="text" name="name" class="form-control" value="Sản phẩm 1">
+                                <input type="text" name="name" class="form-control" value="{{ $product->product_code }}">
                             </div>
                             <div class="form-group">
                                 <label>Giá sản phẩm (Giá chung)</label>
@@ -57,7 +57,7 @@
                                 <label>Ảnh sản phẩm</label>
                                 <input id="img" type="file" name="img" class="form-control hidden"
                                     onchange="changeImg(this)">
-                                <img id="avatar" class="thumbnail" width="100%" height="350px" src="img/import-img.png">
+                                <img id="avatar" class="thumbnail" width="100%" height="350px" src="{{ $product->avatar??'/assets/admin/img/import-img.png' }}">
                             </div>
                         </div>
                         <div class="col-md-12">
