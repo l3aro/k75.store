@@ -14,6 +14,8 @@ class ProductController extends Controller
 
     public function shop()
     {
-        return view('client.shop');
+        $products = \App\Models\Product::latest()->paginate(12);
+
+        return view('client.shop', compact('products'));
     }
 }

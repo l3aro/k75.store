@@ -146,6 +146,7 @@
     <script src="/assets/client/js/jquery.stellar.min.js"></script>
     <!-- Main -->
     <script src="/assets/client/js/main.js"></script>
+    @stack('js')
 
 </body>
 

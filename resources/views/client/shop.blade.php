@@ -5,6 +5,35 @@
 		<div class="row">
 			<div class="col-md-9 col-md-push-3">
 				<div class="row row-pb-lg">
+					@forelse ($products as $product)
+						<div class="col-md-4 text-center">
+							<div class="product-entry">
+								<div class="product-img" style="background-image: url({{ $product->avatar }});">
+						
+									<div class="cart">
+										<p>
+											<span class="addtocart btn-add-to-cart" data-id="{{ $product->id }}">
+												<a href="cart.html">
+													<i class="icon-shopping-cart"></i>
+												</a>
+											</span>
+											<span><a href="detail.html"><i class="icon-eye"></i></a></span>
+						
+						
+										</p>
+									</div>
+								</div>
+								<div class="desc">
+									<h3><a href="detail.html">{{ $product->name }}</a></h3>
+									<p class="price"><span>{{ number_format($product->price) }} đ</span></p>
+								</div>
+							</div>
+						</div>
+					@empty
+						Chưa có sản phẩm
+					@endforelse
+				</div>
+				{{-- <div class="row row-pb-lg">
 					<div class="col-md-4 text-center">
 						<div class="product-entry">
 							<div class="product-img"
@@ -250,7 +279,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> --}}
 				<div class="row">
 					<div class="col-md-12">
 						<ul class="pagination">
@@ -363,3 +392,26 @@
 	</div>
 </div>
 @endsection
+
+@push('js')
+<script>
+$(document).ready(function() {
+	$('.btn-add-to-cart').click(function(e) {
+		e.preventDefault();
+		let id = $(this).attr('data-id');
+		$.ajax({
+			url: '/gio-hang/add',
+			method: "POST",
+			data: {
+				_token: "{{ csrf_token() }}",
+				product_id: id
+			},
+			success: function(data) {
+				$('.cart-quantity').text(data.quantity);
+			}
+		});
+	});
+	
+});
+</script>
+@endpush

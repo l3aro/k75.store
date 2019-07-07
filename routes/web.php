@@ -32,6 +32,11 @@ Route::group(['prefix' => 'gio-hang'], function() {
         'uses' => 'CartController@cart'
     ]);
 
+    Route::post('add', [
+        'as' => 'client.cart.add',
+        'uses' => 'CartController@add'
+    ]);
+
     Route::get('thanh-toan', [
         'as' => 'client.cart.checkout',
         'uses' => 'CartController@checkout'
