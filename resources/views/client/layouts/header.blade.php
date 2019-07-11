@@ -22,7 +22,7 @@
                             <li><a href="about.html">Giới thiệu</a></li>
                             <li><a href="contact.html">Liên hệ</a></li>
                             <li>
-                                <a href="cart.html">
+                                <a href="{{ route('client.cart.cart') }}">
                                     <i class="icon-shopping-cart"></i> 
                                     <span class="cart-quantity">
                                         Giỏ hàng [{{ Cart::getTotalQuantity() }}]

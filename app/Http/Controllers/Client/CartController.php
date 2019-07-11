@@ -39,4 +39,27 @@ class CartController extends Controller
             'quantity' => Cart::getTotalQuantity()
         ], 200);
     }
+
+    public function remove(Request $request)
+    {
+        Cart::remove($request->id);
+
+        $quantity = Cart::getTotalQuantity();
+
+        return response()->json(compact('quantity'), 200);
+    }
+
+    public function update(Request $request)
+    {
+        Cart::update($request->id, array(
+            'quantity' => array(
+                'relative' => false,
+                'value' => $request->quantity
+            ),
+        ));
+
+        $quantity = Cart::getTotalQuantity();
+
+        return response()->json(compact('quantity'), 200);
+    }
 }
