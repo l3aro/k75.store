@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cart;
 use App\Models\Product;
+use App\Models\Order;
 
 class CartController extends Controller
 {
@@ -61,5 +62,25 @@ class CartController extends Controller
         $quantity = Cart::getTotalQuantity();
 
         return response()->json(compact('quantity'), 200);
+    }
+
+    public function submit(Request $request)
+    {
+        $attributes = $request->only([
+            'client_name', 'address', 'email', 'phone'
+        ]);
+        $attributes['status'] = 'waiting';
+
+        $order = Order::create($attributes);
+
+        foreach (Cart::getContent() as $cart) {
+            $order->orderDetails()->create([
+                'product_id' => $cart->id,
+                'quantity' => $cart->quantity,
+                'price' => $cart->price
+            ]);
+        }
+        Cart::clear();
+        return redirect()->route('client.cart.complete');
     }
 }

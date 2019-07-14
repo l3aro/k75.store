@@ -125,7 +125,7 @@
 								</div>
 								<div class="grand-total">
 									<p><span><strong>Tổng cộng:</strong></span> <span>3.550.000 đ</span></p>
-									<a href="checkout.html" class="btn btn-primary">Thanh toán <i
+									<a href="{{ route('client.cart.checkout') }}" class="btn btn-primary">Thanh toán <i
 											class="icon-arrow-right-circle"></i></a>
 								</div>
 							</div>
